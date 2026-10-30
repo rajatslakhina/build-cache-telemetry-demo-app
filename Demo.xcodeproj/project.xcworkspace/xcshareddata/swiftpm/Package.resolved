@@ -1,0 +1,15 @@
+{
+  "originHash" : "bce52a6afebd85e6a47e3bea95005bfecf199eeb2f0a52b572f2dd5d6c580e3f",
+  "pins" : [
+    {
+      "identity" : "build-cache-telemetry-kit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/rajatslakhina/build-cache-telemetry-kit",
+      "state" : {
+        "revision" : "56aa2e48a2199fe3b770b8b99f3e00d5607d19af",
+        "version" : "1.0.0"
+      }
+    }
+  ],
+  "version" : 3
+}

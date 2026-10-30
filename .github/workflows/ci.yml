@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Resolve remote package from GitHub + build Demo for iOS Simulator
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v5
+      - name: Select Xcode 16.4 (explicit fallback, never silent)
+        run: |
+          if [ -d /Applications/Xcode_16.4.app ]; then
+            sudo xcode-select -s /Applications/Xcode_16.4.app
+          else
+            echo "::warning::Xcode 16.4 not installed on this runner; using the runner default"
+          fi
+      - name: Toolchain
+        run: xcodebuild -version
+      - name: Resolve package dependencies from the committed Package.resolved (no floating versions)
+        run: xcodebuild -resolvePackageDependencies -project Demo.xcodeproj -scheme Demo -onlyUsePackageVersionsFromResolvedFile
+      - name: Build for iOS Simulator (compile-only, no device needed)
+        run: >
+          xcodebuild build
+          -project Demo.xcodeproj
+          -scheme Demo
+          -destination 'generic/platform=iOS Simulator'
+          -onlyUsePackageVersionsFromResolvedFile
+          CODE_SIGNING_ALLOWED=NO
